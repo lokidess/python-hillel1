@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load my_filters static thumbnail %}
+
+{% block content %}
+
+<div class="container">
+    {% nav 'home' %}
+</div>
+
+<!--<h1>{{ some_var|safe|default:"No such variable!" }}</h1>-->
+<!--<h1>{% now 'd m Y' %}</h1>-->
+<!--<h1>{{ user.username }}</h1>-->
+<h1>{{ second|minus:first }}</h1>
+<div class="row">
+    <!--<div class="col-md-3" style="border: 1px solid red">-->
+        <!--<form method="post">{% csrf_token %}-->
+
+        <!--</form>-->
+    <!--</div>-->
+    <p>
+        <img src="{% static 'img/barney.jpg' %}">
+    </p>
+
+    {% for post in posts %}
+        {# {% if post.views_count > 0 %} #}
+            <div class="col-md-3" style="border: 1px solid red">{{ post.title }}</div>
+            <div class="col-md-3" style="border: 1px solid red">{{ post.text }}</div>
+            <div class="col-md-3" style="border: 1px solid red">{{ post.author }}</div>
+            <div class="col-md-3" style="border: 1px solid red">
+                <p>
+                    {% if post.preview %}
+                        {% thumbnail post.preview "100x100" as im %}
+                            <img src="{{ im.url }}">
+                        {% endthumbnail %}
+                    {% endif %}
+                </p>
+                <p>
+                {% autoescape off %}
+                    {% get_post_tags post %}
+                {% endautoescape %}
+                </p>
+            </div>
+        {#{% else %}#}
+        {#    <div class="col-md-12" style="border: 1px solid red">Views To low</div>#}
+        {#{% endif %}#}
+    {% endfor %}
+</div>
+{% endblock content %}
